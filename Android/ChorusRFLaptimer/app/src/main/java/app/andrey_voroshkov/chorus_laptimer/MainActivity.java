@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements ConnectionListene
     private PendingIntent mPermissionIntent;
     BTService bt;
     UDPService udp;
+    TCPService tcp;
     USBService usb;
 
     public void onDisconnected() {
@@ -95,6 +96,11 @@ public class MainActivity extends AppCompatActivity implements ConnectionListene
     void initUDP() {
         udp = new UDPService();
         udp.setConnectionListener(this);
+    }
+
+    void initTCP() {
+        tcp = new TCPService();
+        tcp.setConnectionListener(this);
     }
 
     void initBluetooth() {
@@ -152,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements ConnectionListene
         initBroadcastReceiverForBluetooth();
         initBluetooth();
         initUDP();
+        initTCP();
         initBroadcastReceiverForUsbPermissions();
         initUSB();
         retrieveAndStoreAppVersion(getApplicationContext());
@@ -218,6 +225,7 @@ public class MainActivity extends AppCompatActivity implements ConnectionListene
             menu.findItem(R.id.menuUSBConnect).setVisible(device != null);
             menu.findItem(R.id.menuBTConnect).setVisible(true);
             menu.findItem(R.id.menuUDPConnect).setVisible(true);
+            menu.findItem(R.id.menuTCPConnect).setVisible(true);
             menu.findItem(R.id.menuDisconnect).setVisible(false);
         }
         return super.onPrepareOptionsMenu(menu);
@@ -247,6 +255,10 @@ public class MainActivity extends AppCompatActivity implements ConnectionListene
             case R.id.menuUDPConnect:
                 udp.connect(getGatewayIP(), 0);
                 useUDP();
+                break;
+            case R.id.menuTCPConnect:
+                tcp.connect(getGatewayIP(), 0);
+                useTCP();
                 break;
             case R.id.menuUSBConnect:
                 checkUSBPermissionsAndConnectIfAllowed();
@@ -333,6 +345,9 @@ public class MainActivity extends AppCompatActivity implements ConnectionListene
 
     public void useUDP() {
         AppState.getInstance().conn = udp;
+    }
+    public void useTCP() {
+        AppState.getInstance().conn = tcp;
     }
 
     public void useUSB() {

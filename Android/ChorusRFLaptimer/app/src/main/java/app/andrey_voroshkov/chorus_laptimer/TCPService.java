@@ -10,6 +10,7 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.ClosedByInterruptException;
+import java.nio.channels.NotYetConnectedException;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.util.concurrent.CountDownLatch;
@@ -18,7 +19,6 @@ import java.util.concurrent.CountDownLatch;
  * Created by Andrey_Voroshkov on 10/15/2017.
  * This is the analog of UDPService.java.
  * TCP provide reliable packets delivery whereas UDP loses packets easily.
- * TODO: Need to add TCP as an option for reliable wifi connection.
  */
 
 public class TCPService implements Connection{
@@ -194,6 +194,7 @@ public class TCPService implements Connection{
                 mChannel.configureBlocking(false);
                 mChannel.socket().setTcpNoDelay(true);
                 mChannel.connect(new InetSocketAddress(mAddress, mPort));
+                while(!mChannel.finishConnect());
             } catch (Exception e) {
                 mChannel = null;
                 mActivityHandler.sendMessage(composeMessage(MSG_ON_CONNECTION_FAIL, e.toString()));
@@ -235,7 +236,11 @@ public class TCPService implements Connection{
                         mSendBuf.flip();
                         mChannel.write(mSendBuf);
                         mSendBuf.clear();
-                    } catch (Exception e) {
+                    }
+                    catch (NotYetConnectedException e){
+
+                    }
+                    catch (Exception e) {
                         disconnect();
                         //TODO: implement some handling here!
                     }
@@ -289,6 +294,9 @@ public class TCPService implements Connection{
                 }
                 catch(ClosedByInterruptException e) {
                     // if thread was interrupted, we should not disconnect, because it's already being disconnected
+                }
+                catch (NotYetConnectedException e) {
+
                 }
                 catch (Exception e) {
                     disconnect();

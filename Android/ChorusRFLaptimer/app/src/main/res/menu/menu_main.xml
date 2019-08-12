@@ -11,6 +11,10 @@
         android:title="@string/menu_udp_connect"
         app:showAsAction="never" />
     <item
+        android:id="@+id/menuTCPConnect"
+        android:title="@string/menu_tcp_connect"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/menuUSBConnect"
         android:title="@string/menu_usb_connect"
         app:showAsAction="never" />
