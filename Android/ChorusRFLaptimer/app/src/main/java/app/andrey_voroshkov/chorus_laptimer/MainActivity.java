@@ -235,6 +235,27 @@ public class MainActivity extends AppCompatActivity implements ConnectionListene
         return super.onPrepareOptionsMenu(menu);
     }
 
+    private void bindNetworkToWiFi() {
+        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
+            ConnectivityManager cm = (ConnectivityManager) getSystemService( Context.CONNECTIVITY_SERVICE );
+            for ( Network net : cm.getAllNetworks() ) {
+                NetworkInfo networkInfo = cm.getNetworkInfo( net );
+                if ( networkInfo.getType() == ConnectivityManager.TYPE_WIFI ) {
+                    cm.bindProcessToNetwork( net );
+                    break;
+                }
+            }
+        }
+    }
+
+    private void unbindNetwork() {
+        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
+            ConnectivityManager cm = (ConnectivityManager) getSystemService( Context.CONNECTIVITY_SERVICE );
+            cm.bindProcessToNetwork( null );
+        }
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -257,26 +278,16 @@ public class MainActivity extends AppCompatActivity implements ConnectionListene
                 startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
                 break;
             case R.id.menuUDPConnect:
-                ConnectivityManager cm = (ConnectivityManager) getSystemService( Context.CONNECTIVITY_SERVICE );
-                if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
-                    for ( Network net : cm.getAllNetworks() ) {
-                        NetworkInfo networkInfo = cm.getNetworkInfo( net );
-                        if ( networkInfo.getType() == ConnectivityManager.TYPE_WIFI ) {
-                            cm.bindProcessToNetwork( net );
-                        }
-                        break;
-                    }
-                }
-
+                bindNetworkToWiFi();
                 udp.connect(getGatewayIP(), 0);
                 useUDP();
-                if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
-                    cm.bindProcessToNetwork( null );
-                }
+                unbindNetwork();
                 break;
             case R.id.menuTCPConnect:
+                bindNetworkToWiFi();
                 tcp.connect(getGatewayIP(), 0);
                 useTCP();
+                unbindNetwork();
                 break;
             case R.id.menuUSBConnect:
                 checkUSBPermissionsAndConnectIfAllowed();
