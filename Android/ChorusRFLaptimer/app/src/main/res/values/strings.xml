@@ -82,6 +82,7 @@
     <string name="api_err_button">Disconnect</string>
 
     <string name="cannotAccessUsbDevice">Cannot access USB device</string>
+    <string name="add_group">Add</string>
 
     <plurals name="pilots_in_race">
         <item quantity="one">Start Race (%1$d pilot)</item>

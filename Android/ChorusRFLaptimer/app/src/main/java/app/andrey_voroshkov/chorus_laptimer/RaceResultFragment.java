@@ -1,15 +1,22 @@
 package app.andrey_voroshkov.chorus_laptimer;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
@@ -20,6 +27,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
+
+import app.andrey_voroshkov.chorus_laptimer.structs.PilotGroup;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -207,6 +216,59 @@ public class RaceResultFragment extends Fragment {
                 } else {
                     return false; //allow short click after long to start race on both short and long clicks
                 }
+            }
+        });
+
+        // Group selection
+        final Spinner select = (Spinner)mRootView.findViewById(R.id.group_selection);
+        // TODO: this is _really_ bad. But "works" for now. I need to create a custom adapter to avoid having two lists
+        final ArrayList<String> list = new ArrayList<>();
+        list.add("Default");
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, list);
+        select.setAdapter(adapter);
+        select.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String name = select.getItemAtPosition(position).toString();
+                GroupManager.getInstance().setCurrentGroup(name);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        Button button = (Button)mRootView.findViewById(R.id.add_group_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Name:");
+                final EditText input = new EditText(getContext());
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                // Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String name = input.getText().toString();
+                        list.add(name);
+                        adapter.notifyDataSetChanged();
+                        PilotGroup g = new PilotGroup();
+                        g.setName(name);
+                        GroupManager.getInstance().addGroup(g);
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
         return rootView;
