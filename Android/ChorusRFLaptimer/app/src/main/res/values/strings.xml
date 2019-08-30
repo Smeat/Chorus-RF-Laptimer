@@ -83,6 +83,7 @@
 
     <string name="cannotAccessUsbDevice">Cannot access USB device</string>
     <string name="add_group">Add</string>
+    <string name="remove_group">Del</string>
 
     <plurals name="pilots_in_race">
         <item quantity="one">Start Race (%1$d pilot)</item>

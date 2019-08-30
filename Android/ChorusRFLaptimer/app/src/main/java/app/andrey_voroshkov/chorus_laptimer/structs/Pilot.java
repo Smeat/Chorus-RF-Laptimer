@@ -1,5 +1,7 @@
 package app.andrey_voroshkov.chorus_laptimer.structs;
 
+import android.util.Log;
+
 import app.andrey_voroshkov.chorus_laptimer.AppState;
 import app.andrey_voroshkov.chorus_laptimer.DeviceState;
 

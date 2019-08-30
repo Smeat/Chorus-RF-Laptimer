@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,9 @@ import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
+import java.util.Vector;
 
 import app.andrey_voroshkov.chorus_laptimer.structs.PilotGroup;
 
@@ -220,11 +223,9 @@ public class RaceResultFragment extends Fragment {
         });
 
         // Group selection
-        final Spinner select = (Spinner)mRootView.findViewById(R.id.group_selection);
-        // TODO: this is _really_ bad. But "works" for now. I need to create a custom adapter to avoid having two lists
-        final ArrayList<String> list = new ArrayList<>();
-        list.add("Default");
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, list);
+        final Spinner select = mRootView.findViewById(R.id.group_selection);
+        final List<PilotGroup> list = GroupManager.getInstance().getAllGroups();
+        final ArrayAdapter<PilotGroup> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, list);
         select.setAdapter(adapter);
         select.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -239,8 +240,8 @@ public class RaceResultFragment extends Fragment {
             }
         });
 
-        Button button = (Button)mRootView.findViewById(R.id.add_group_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button add_button = mRootView.findViewById(R.id.add_group_button);
+        add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -254,11 +255,39 @@ public class RaceResultFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String name = input.getText().toString();
-                        list.add(name);
-                        adapter.notifyDataSetChanged();
                         PilotGroup g = new PilotGroup();
+                        g.collectSettings();
                         g.setName(name);
                         GroupManager.getInstance().addGroup(g);
+                        AppPreferences.save(AppPreferences.PILOT_GROUPS);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+
+        Button remove_button = mRootView.findViewById(R.id.remove_group_button);
+        remove_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Really remove group " + select.getSelectedItem().toString() + "?");
+
+                // Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        GroupManager.getInstance().removeGroup(select.getSelectedItem().toString());
+                        AppPreferences.save(AppPreferences.PILOT_GROUPS);
+                        adapter.notifyDataSetChanged();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

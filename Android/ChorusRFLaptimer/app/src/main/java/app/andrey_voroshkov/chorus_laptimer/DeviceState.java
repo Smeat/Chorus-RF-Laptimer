@@ -8,7 +8,7 @@ public class DeviceState {
     public int channel;
     public int band;
     public int threshold;
-    public String pilotName;
+    public String pilotName = "Pilot";
     public boolean isCalibrated;
     public int calibrationTime;
     public int calibrationValue;

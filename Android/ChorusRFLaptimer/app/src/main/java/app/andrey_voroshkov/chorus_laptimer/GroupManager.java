@@ -1,7 +1,9 @@
 package app.andrey_voroshkov.chorus_laptimer;
 
+import java.util.Collections;
 import java.util.Vector;
 
+import app.andrey_voroshkov.chorus_laptimer.structs.Pilot;
 import app.andrey_voroshkov.chorus_laptimer.structs.PilotGroup;
 
 public class GroupManager {
@@ -17,14 +19,26 @@ public class GroupManager {
     private GroupManager(){
         m_current_group = new PilotGroup();
         m_current_group.setName("Default");
+        m_current_group.collectSettings();
         m_groups.add(m_current_group);
-
-        // TODO: this is for debug!!
-        m_groups.add(new PilotGroup());
     }
 
     public PilotGroup getCurrentGroup() {
         return m_current_group;
+    }
+
+    public Vector<PilotGroup> getAllGroups() { return m_groups;}
+
+    public void setAllGroups(Vector<PilotGroup> g) {
+        if(g != null && g.size() > 0) {
+            m_groups.clear();
+            m_groups.addAll(g);
+            m_current_group = g.firstElement();
+
+            while(m_current_group.getSize() > AppState.getInstance().deviceStates.size()) {
+                AppState.getInstance().deviceStates.add(new DeviceState());
+            }
+        }
     }
 
     public void addGroup(PilotGroup group) {
@@ -32,10 +46,14 @@ public class GroupManager {
     }
 
     public void removeGroup(PilotGroup group) {
-        if(group.equals(m_current_group)) {
-            m_current_group = null;
-        }
         m_groups.remove(group);
+        if(group.equals(m_current_group)) {
+            m_current_group = m_groups.firstElement();
+        }
+    }
+
+    public void removeGroup(String name) {
+        removeGroup(getGroup(name));
     }
 
     public PilotGroup getGroup(String name) {

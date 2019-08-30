@@ -9,7 +9,6 @@ public class PilotGroup {
     private Vector<Pilot> m_pilots = new Vector<>();
 
     public PilotGroup() {
-        collectSettings();
     }
 
     public void applySettings() {
@@ -39,5 +38,14 @@ public class PilotGroup {
 
     public void setName(String name) {
         m_name = name;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+
+    public int getSize() {
+        return m_pilots.size();
     }
 };

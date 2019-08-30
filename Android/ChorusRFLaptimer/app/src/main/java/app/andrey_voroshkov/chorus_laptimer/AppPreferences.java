@@ -2,9 +2,18 @@ package app.andrey_voroshkov.chorus_laptimer;
 
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Vector;
+
+import app.andrey_voroshkov.chorus_laptimer.structs.Pilot;
+import app.andrey_voroshkov.chorus_laptimer.structs.PilotGroup;
 
 /**
  * Created by Andrey_Voroshkov on 3/26/2017.
@@ -30,6 +39,7 @@ public class AppPreferences {
     public static final String LIPO_MONITOR_ENABLED = "lipo_mon_enabled";
     public static final String LIPO_ADJUSTMENT_CONST = "lipo_adjust_const";
     public static final String RANDOM_START_TIME = "random_start_time";
+    public static final String PILOT_GROUPS = "pilot_groups";
 
 
     public String[] mBands;
@@ -37,6 +47,7 @@ public class AppPreferences {
     public String[] mPilots;
     public String[] mDeviceEnabledStatuses;
     public String[] mDeviceThresholds;
+    public String[] m_groups;
 
     private static AppPreferences instance = new AppPreferences();
 
@@ -50,6 +61,7 @@ public class AppPreferences {
         mPilots = getArrayFromStringPreference(DEVICE_PILOTS);
         mDeviceEnabledStatuses = getArrayFromStringPreference(DEVICE_ENABLED);
         mDeviceThresholds = getArrayFromStringPreference(DEVICE_THRESHOLDS);
+        m_groups = getArrayFromStringPreference(PILOT_GROUPS);
     }
 
     private static String[] getArrayFromStringPreference(String prefName) {
@@ -166,6 +178,12 @@ public class AppPreferences {
                 editor.putInt(LIPO_ADJUSTMENT_CONST, app.batteryAdjustmentConst);
                 break;
         }
+
+        // Always save the list
+        Gson gson = new Gson();
+        String json = gson.toJson(GroupManager.getInstance().getAllGroups());
+        editor.putString(PILOT_GROUPS, json);
+
         editor.apply();
     }
 
@@ -195,7 +213,11 @@ public class AppPreferences {
             }
         }
 
-
+        Gson gson = new Gson();
+        String json = app.preferences.getString(PILOT_GROUPS, "");
+        Type type = new TypeToken<Vector<PilotGroup>>(){}.getType();
+        Vector<PilotGroup> g = gson.fromJson(json, type);
+        GroupManager.getInstance().setAllGroups(g);
     }
 
     public static void applyDeviceDependentPreferences() {

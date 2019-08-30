@@ -22,7 +22,7 @@ import java.util.concurrent.CountDownLatch;
  */
 
 public class TCPService implements Connection{
-    final static int MAX_SEND_PACKET_SIZE = 200;
+    final static int MAX_SEND_PACKET_SIZE = 30;
     final static int MAX_UDP_PACKET_SIZE = 65507;
 
     final static String KEY_MSG_TYPE = "msg";
