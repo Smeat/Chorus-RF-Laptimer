@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.ContactsContract;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
 
@@ -49,6 +50,13 @@ public class AppState {
     public static final double ARDUINO_ANALOG_COUNTS = 1024;
 
     private static AppState instance = new AppState();
+    private int mExtendedAPIVersion = 0;
+    private int mADCMode = 0;
+    private int mADCVal = 0;
+    private int mWifiProtocol;
+    private int mWifiChannel;
+    private int mRxNum;
+    private int mFilterCutoff;
 
     public static void Reset_Instance_TEST_ONLY() {
         instance = new AppState();
@@ -390,7 +398,7 @@ public class AppState {
     }
 
     public boolean areAllThresholdsSet() {
-        for(DeviceState ds: deviceStates) {
+       for(DeviceState ds: deviceStates) {
             if (ds.threshold < MIN_RSSI && ds.isEnabled) {
                 return false;
             }
@@ -486,6 +494,8 @@ public class AppState {
         clearWrongApiWarningCounter();
         sendBtCommand("R*#");
         sendBtCommand("R*a");
+        sendBtCommand("ER*#");
+        sendBtCommand("ER*a");
     }
 
     public void resetDeviceTransmissionStates() {
@@ -493,6 +503,8 @@ public class AppState {
             deviceTransmissionStates.set(i, false);
         }
     }
+
+
     public void checkApiVersion(int deviceId, int version) {
         DeviceState currentState = deviceStates.get(deviceId);
         if (currentState == null) {
@@ -1048,6 +1060,76 @@ public class AppState {
     public long getConnectionTestAvgDelay() {
         if (mConnectionTester == null) return 0;
         return mConnectionTester.avgDelay;
+    }
+
+    public void setAdcMode(int mode) {
+        this.mADCMode = mode;
+        emitEvent(DataAction.EXTENDED_ADC_MODE);
+    }
+
+    public int getAdcMode() {
+        return this.mADCMode;
+    }
+
+    public void setAdcVal(int val) {
+        if(val >= 0){
+            this.mADCVal = val;
+            emitEvent(DataAction.EXTENDED_ADC_VAL);
+        }
+    }
+    
+    public void setWifiProtocol(int proto){
+        this.mWifiProtocol = proto;
+        emitEvent(DataAction.EXTENDED_WIFI_PROTO);
+    }
+    
+    public int getWifiProtocol() {
+        return this.mWifiProtocol;
+    }
+
+    public void setWifiChannel(int channel){
+        if(channel > 13) channel = 13;
+        if(channel > 0){
+            this.mWifiChannel = channel;
+            emitEvent(DataAction.EXTENDED_WIFI_CHANNEL);
+        }
+    }
+
+    public int getWifiChannell() {
+        return this.mWifiChannel;
+    }
+    
+    public void setRxNum(int num) {
+        if(num > 0) {
+            this.mRxNum = num;
+            emitEvent(DataAction.EXTENDED_RX_NUM);
+        }
+    }
+    
+    public int getRxNum() {
+        return this.mRxNum;
+    }
+
+    public int getAdcVal() {
+        return this.mADCVal;
+    }
+
+    public void setFilterCutoff(int cutoff) {
+        if(cutoff > 0) {
+            this.mFilterCutoff = cutoff;
+            emitEvent(DataAction.EXTENDED_FILTER_CUTOFF);
+        }
+    }
+
+    public int getFilterCutoff() {
+        return this.mFilterCutoff;
+    }
+
+    public void setExtendedApiVersion(int version) {
+        mExtendedAPIVersion = version;
+    }
+    public int getExtendedApiVersion() {
+        return mExtendedAPIVersion;
     }
 }
 

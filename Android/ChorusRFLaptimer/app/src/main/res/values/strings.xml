@@ -14,6 +14,9 @@
     <string name="tab_frequency">Freq</string>
     <string name="tab_setup">Setup</string>
 
+    <!-- Setup esp32-->
+    <string name="setup32_vbat_mode">VBAT Measurement Mode</string>
+    <string name="setup32_vbat_val">ADC calibration Constant</string>
     <!-- Setup -->
     <string name="setup_pilot_name">Pilot Name</string>
     <string name="setup_rssi_threshold">RSSI Threshold</string>
@@ -84,6 +87,10 @@
     <string name="cannotAccessUsbDevice">Cannot access USB device</string>
     <string name="add_group">Add</string>
     <string name="remove_group">Del</string>
+    <string name="setup32_wifi_channel">WiFi Channel (1-13)</string>
+    <string name="esp32_wifi_proto">WiFi Protocol</string>
+    <string name="setup32_filter">RX ADC Filter cutoff</string>
+    <string name="setup32_rx_num">Numer of RX modules</string>
 
     <plurals name="pilots_in_race">
         <item quantity="one">Start Race (%1$d pilot)</item>

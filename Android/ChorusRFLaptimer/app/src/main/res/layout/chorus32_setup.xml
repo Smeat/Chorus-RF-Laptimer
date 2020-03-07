@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:animateLayoutChanges="true">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtRX"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:elevation="1dp"
+                android:text="@string/setup32_rx_num" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnDecRxNum"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/minus_sign"
+                    android:textStyle="normal|bold" />
+
+                <TextView
+                    android:id="@+id/esp32_rx_num"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:textColor="?android:attr/textColorPrimaryNoDisable" />
+
+                <Button
+                    android:id="@+id/btnIncRxNum"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/plus_sign"
+                    android:textStyle="normal|bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:elevation="1dp"
+                android:text="@string/setup32_vbat_mode" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <app.andrey_voroshkov.chorus_laptimer.SpinnerUserEvent
+                    android:id="@+id/esp32_vbat_mode"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="1"
+                    android:textColor="?android:attr/textColorPrimaryNoDisable"
+                    android:spinnerMode="dropdown" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:elevation="1dp"
+                android:text="@string/setup32_vbat_val" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnDecAdcVal"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/minus_sign"
+                    android:textStyle="normal|bold" />
+
+                <TextView
+                    android:id="@+id/esp32_vbat_val"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:textColor="?android:attr/textColorPrimaryNoDisable" />
+
+                <Button
+                    android:id="@+id/btnIncAdcVal"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/plus_sign"
+                    android:textStyle="normal|bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtWifiproto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:elevation="1dp"
+                android:text="@string/esp32_wifi_proto" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <app.andrey_voroshkov.chorus_laptimer.SpinnerUserEvent
+                    android:id="@+id/esp32_wifi_proto"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="1"
+                    android:textColor="?android:attr/textColorPrimaryNoDisable"
+                    android:spinnerMode="dropdown" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtwifiChannel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:elevation="1dp"
+                android:text="@string/setup32_wifi_channel" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnDecWifiChannel"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/minus_sign"
+                    android:textStyle="normal|bold" />
+
+                <TextView
+                    android:id="@+id/esp32_wifi_channel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:textColor="?android:attr/textColorPrimaryNoDisable" />
+
+                <Button
+                    android:id="@+id/btnIncWifiChannel"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/plus_sign"
+                    android:textStyle="normal|bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtFilter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:elevation="1dp"
+                android:text="@string/setup32_filter" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnDecFilter"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/minus_sign"
+                    android:textStyle="normal|bold" />
+
+                <TextView
+                    android:id="@+id/esp32_filter"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:textColor="?android:attr/textColorPrimaryNoDisable" />
+
+                <Button
+                    android:id="@+id/btnIncFilter"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/plus_sign"
+                    android:textStyle="normal|bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

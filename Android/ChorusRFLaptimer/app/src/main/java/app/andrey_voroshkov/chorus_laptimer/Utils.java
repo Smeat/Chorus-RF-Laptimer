@@ -50,7 +50,7 @@ public class Utils {
         return String.format("%d:%02d.%03d", m, s, msec);
     }
 
-    public static String btDataChunkParser(String chunk) {
+    private static String ExtendedChunkParser(String chunk) {
         long curTime = System.currentTimeMillis();
         receiveDelay = curTime - lastReceiveTime;
         lastReceiveTime = curTime;
@@ -61,6 +61,67 @@ public class Utils {
             return result.toString();
         }
         char dest = chunk.charAt(0);
+        char module = chunk.charAt(1);
+        int moduleId = -1;
+        if (module != '*') {
+            moduleId = Integer.parseInt(String.valueOf(module), 16);
+        }
+
+        if(dest == 'S') {
+            char dataType = chunk.charAt(2);
+            int val = 0;
+            switch(dataType) {
+                case '#':
+                    int apiVersion = Integer.parseInt(chunk.substring(3,7), 16);
+                    AppState.getInstance().setExtendedApiVersion(apiVersion);
+                    break;
+                case 'v':
+                    int mode = Integer.parseInt(chunk.substring(3,4), 16);
+                    AppState.getInstance().setAdcMode(mode);
+                    break;
+                case 'V':
+                    val = Integer.parseInt(chunk.substring(3), 16);
+                    AppState.getInstance().setAdcVal(val);
+                    break;
+                case 'M':
+                    val = Integer.parseInt(chunk.substring(3), 16);
+                    AppState.getInstance().setRxNum(val);
+                    break;
+                case 'F':
+                    val = Integer.parseInt(chunk.substring(3), 16);
+                    AppState.getInstance().setFilterCutoff(val);
+                    break;
+                case 'w':
+                    val = Integer.parseInt(chunk.substring(3), 16);
+                    AppState.getInstance().setWifiProtocol(val);
+                    break;
+                case 'W':
+                    val = Integer.parseInt(chunk.substring(3), 16);
+                    AppState.getInstance().setWifiChannel(val);
+                    break;
+            }
+        }
+
+        return result.toString();
+    }
+
+    public static String btDataChunkParser(String chunk) {
+
+        long curTime = System.currentTimeMillis();
+        receiveDelay = curTime - lastReceiveTime;
+        lastReceiveTime = curTime;
+
+        StringBuilder result = new StringBuilder();
+
+        if (chunk.length() < 2) {
+            return result.toString();
+        }
+        char dest = chunk.charAt(0);
+
+        if(dest == 'E') {
+            return ExtendedChunkParser(chunk.substring(1));
+        }
+
         char module = chunk.charAt(1);
         int moduleId = -1;
         if (module != '*') {

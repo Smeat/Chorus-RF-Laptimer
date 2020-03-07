@@ -27,18 +27,19 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         // getItem is called to instantiate the fragment for the given page.
         // Return a DeviceSetupFragment (defined as a static inner class below).
         switch (position) {
-            case 0: return RaceSetupFragment.newInstance(position + 1);
-            case 1: return ChannelsSetupFragment.newInstance(position + 1);
-            case 2: return PilotsSetupFragment.newInstance(position + 1);
-            case 3: return RaceResultFragment.newInstance(position + 1);
+            case 0: return ESP32SetupFragment.newInstance(position + 1);
+            case 1: return RaceSetupFragment.newInstance(position + 1);
+            case 2: return ChannelsSetupFragment.newInstance(position + 1);
+            case 3: return PilotsSetupFragment.newInstance(position + 1);
+            case 4: return RaceResultFragment.newInstance(position + 1);
         }
         return null;
     }
 
     @Override
     public int getCount() {
-        // Show 4 total pages.
-        return 4;
+        // Show 5 total pages.
+        return 5;
     }
 
     @Override
@@ -46,15 +47,18 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         String title = null;
         switch (position) {
             case 0:
-                title = resources.getString(R.string.tab_setup);
+                title = "ESP32";
                 break;
             case 1:
-                title = resources.getString(R.string.tab_frequency);
+                title = resources.getString(R.string.tab_setup);
                 break;
             case 2:
-                title = resources.getString(R.string.tab_pilots);
+                title = resources.getString(R.string.tab_frequency);
                 break;
             case 3:
+                title = resources.getString(R.string.tab_pilots);
+                break;
+            case 4:
                 title = resources.getString(R.string.tab_race);
                 break;
         }

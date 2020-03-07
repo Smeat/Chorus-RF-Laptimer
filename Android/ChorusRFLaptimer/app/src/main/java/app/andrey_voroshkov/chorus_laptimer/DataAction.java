@@ -35,5 +35,11 @@ public enum DataAction {
     WrongApiVersion,
     ThresholdSetupState,
     Disconnect,
-    ConnectionTester
+    ConnectionTester,
+    EXTENDED_ADC_MODE,
+    EXTENDED_ADC_VAL,
+    EXTENDED_WIFI_CHANNEL,
+    EXTENDED_WIFI_PROTO,
+    EXTENDED_RX_NUM,
+    EXTENDED_FILTER_CUTOFF
 }
